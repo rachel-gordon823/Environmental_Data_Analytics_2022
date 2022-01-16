@@ -85,6 +85,7 @@ sqrt(25)
 sin(3)
 pi
 
+sqrt(25)
 # Summary statistics
 mean(5, 4, 6, 4, 6)
 median(5, 4, 6, 4, 6)
@@ -126,7 +127,7 @@ longnameforillustration
 
 ```{r}
 long_name_for_illustration <- 11
-
+long_name_for_illustration
 ```
 
 ### Comments
@@ -135,6 +136,7 @@ Within your R code, it is often useful to include notes about your workflow. So 
 # I am demonstrating a comment here. 
 
 1 + 1 # This is a simple math problem
+#1+1
 ```
 
 ### Functions
@@ -225,7 +227,7 @@ meal <- recipe4(4); meal
 meal2 <- recipe4(2); meal2
 meal3 <- recipe5(3); meal3
 
-recipe6 <- function(x){
+recipe6 <-function(x){
   ifelse(x<3, x*2, x/2) #log_exp, if TRUE, if FALSE
   
 }

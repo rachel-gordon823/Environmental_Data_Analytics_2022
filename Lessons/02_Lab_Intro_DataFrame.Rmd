@@ -24,7 +24,11 @@ Let's look into a built-in data frame from package "datasets" - cars. The data g
 cars
 ```
 
+
 Note that it has 2 columns and 50 rows.
+```{r}
+
+```
 
 ## Data frame columns
 
@@ -33,9 +37,16 @@ Suppose you want just the column speed. How would you access that data?
 ```{r}
 cars$speed
 ```
+```{r}
+cars$speed
+```
 
 How would you store it on another object?
 
+```{r}
+car_speed <- cars$speed
+car_speed
+```
 ```{r}
 car_speed <- cars$speed
 car_speed
@@ -48,6 +59,13 @@ Is the new object you create a data frame?
 ```{r}
 #Option 1
 class(car_speed)
+```
+
+
+```{r}
+#Option 1
+class(car_speed)
+
 
 #Option 2
 is.data.frame(car_speed)
@@ -55,6 +73,22 @@ is.data.frame(car_speed)
 
 How could you make it a data frame?
 
+```{r}
+#Option 2
+is.data.frame(car_speed)
+```
+```{r}
+#Option 2
+is.data.frame(car_speed)
+```
+
+
+
+```{r}
+df_car_speed <- as.data.frame(car_speed)
+df_car_speed
+class(df_car_speed)
+```
 ```{r}
 df_car_speed <- as.data.frame(car_speed)
 df_car_speed
@@ -80,11 +114,39 @@ class(df_opt2)
 df_opt2
 
 ```
+```{r}
+car_dist <- cars$dist
+
+#Option 1
+df <- cbind(df_car_speed,car_dist) #similarly rows could be added using rbind()
+class(df)
+df
+```
+```{r}
+#Or Option 2 - transform into a data frame before binding
+df_car_dist <- as.data.frame(car_dist) #op2
+df_opt2 <- cbind(df_car_speed,df_car_dist)
+class(df_opt2)
+df_opt2
+
+```
+```{r}
+
+```
+
+
+
+
 
 Note that when we transformed the vector in a data frame the name of the vector became the column name.
 
 ```{r}
 colnames(df)  #or simply names()
+names(df)
+```
+
+```{r}
+colnames(df) #or simply names()
 names(df)
 ```
 
@@ -98,6 +160,12 @@ create_df <- data.frame("speed"=car_speed,"dist"=car_dist)
 create_df
 ```
 
+```{r}
+#useful function data.frame()
+create_df <- data.frame("speed"=car_speed,"dist"=car_dist)
+create_df
+
+```
 
 ## Data frame functions
 
