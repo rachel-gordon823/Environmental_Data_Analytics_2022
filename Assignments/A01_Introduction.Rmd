@@ -1,6 +1,6 @@
 ---
 title: "Assignment 1: Introduction"
-author: "Student Name"
+author: "Rachel Gordon"
 output: pdf_document
 geometry: margin=2.54cm
 ---
@@ -22,21 +22,23 @@ The completed exercise is due on <>.
 
 1. What are your previous experiences with data analytics, R, and Git? Include both formal and informal training.
 
-> Answer: 
+> Answer:
+I have not had any previous experience with data analytics, R, or Git. My first exposure to R and Git was our first class session last week. I am excited to take this course as I keep learning about how critical data analytics is for our world today, especially for a career in environmental management and sustainability. 
+
 
 2. Are there any components of the course about which you feel confident?
 
-> Answer: 
+> Answer: I feel confident about the fact that my curiousity helps me navigate challenging courses and topics like this. Although this material is very new to me, I think my strength is my ability to problem solve with the resources I have, allowing me to answer questions that I may come across.
 
 3. Are there any components of the course about which you feel apprehensive?
 
-> Answer: 
+> Answer: I am a bit nervous about the fact that many other students in this course have had exposure to R before. I am nervous about asking questions that may feel redundant and unnecessary to other students who are more advanced in R. I know this class encourages questions and individuals with varying backgrounds, but that is something I anticipate struggling with throughout the semester.
 
 
 ## 2) GitHub
 
 Provide a link below to your forked course repository in GitHub. Make sure you have pulled all recent changes from the course repository  and that you have updated your course README file. 
 
-> Answer: 
+> Answer: https://github.com/rachel-gordon823/Environmental_Data_Analytics_2022.git
 
 
