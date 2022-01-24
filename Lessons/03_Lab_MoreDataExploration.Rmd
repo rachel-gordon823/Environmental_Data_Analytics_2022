@@ -67,8 +67,8 @@ list1[[2]]
 
 # Data Frames ----
 d <- c(1, 2, 3, 4) # What type of vector?
-e <- c("red", "white", "red", NA) # What type of vector?
-f <- c(TRUE, TRUE, TRUE, FALSE) # What type of vector?
+e <- c("red", "white", "red", NA) # numeric vector
+f <- c(TRUE, TRUE, TRUE, FALSE) # character vector
 dataframe1 <- data.frame(d,e,f) #
 names(dataframe1) <- c("ID","Color","Passed"); View(dataframe1) # 
 
