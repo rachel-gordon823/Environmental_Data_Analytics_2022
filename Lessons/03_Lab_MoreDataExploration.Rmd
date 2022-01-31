@@ -176,6 +176,7 @@ date_obj_today
 class(date_obj_today)
 #Ex2
 str_today <- "21-feb-3"
+class(str_today)
 #Sine the format is year-month-day we will use function ymd()
 date_obj_today <- ymd(str_today)
 date_obj_today
