@@ -1,0 +1,121 @@
+---
+title: "Lab 4: Data Wrangling"
+author: "Environmental Data Analytics | John Fay and Luana Lima | Developed by Kateri Salk"
+date: "Spring 2022"
+output: pdf_document
+geometry: margin=2.54cm
+editor_options: 
+  chunk_output_type: console
+---
+
+## Objectives
+1- Answer questions on M3/A3
+2- Answer questions on M4
+3- Practice wrangling datasets with dplyr functions
+
+## Set up your session
+
+Today we will work with a dataset from the [North Temperate Lakes Long-Term Ecological Research Station](https://lter.limnology.wisc.edu/about/overview). The NTL-LTER is located in the boreal zone in northern Wisconsin, USA. We will use the [chemical and physical limnology dataset](https://lter.limnology.wisc.edu/content/cascade-project-north-temperate-lakes-lter-core-data-physical-and-chemical-limnology-1984), running from 1984-2016. 
+
+Opening discussion: why might we be interested in long-term observations of temperature, oxygen, and light in lakes?
+
+> Add notes here: 
+
+```{r, message = FALSE}
+getwd()
+#install.packages(tidyverse)
+library(tidyverse)
+#install.packages(lubridate)
+library(lubridate)
+NTL.phys.data <- read.csv("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv", stringsAsFactors = TRUE)
+
+class(NTL.phys.data$sampledate)
+# Format sampledate as date
+NTL.phys.data$sampledate <- as.Date(NTL.phys.data$sampledate, format = "%m/%d/%y")
+```
+
+
+## Filter
+
+Filtering allows us to choose certain rows (observations) in our dataset.
+
+```{r}
+#before choosing rows, important to know what the class of the row is
+class(NTL.phys.data$lakeid)
+class(NTL.phys.data$depth)
+
+# dplyr filtering; only want when depth = 0
+NTL.phys.data.surface <- filter(NTL.phys.data, depth == 0)
+
+# Choose multiple conditions to filter; summary shows we have most observations with Paul Lake and Peter Lake
+summary(NTL.phys.data$lakename)
+NTL.phys.data.PeterPaul <- filter(NTL.phys.data, lakename %in% c("Paul Lake", "Peter Lake"))
+
+# Choose a range of conditions of a numeric or integer variable
+#Using c to create a range
+summary(NTL.phys.data$daynum)
+NTL.phys.data.JunethruOctober <- filter(NTL.phys.data, daynum %in% c(152:304))
+
+# Exercise 1: 
+# filter NTL.phys.data for the year 1999
+class(NTL.phys.data$year4) #stored as an integer
+NTL.phys.data.1999 <- filter(NTL.phys.data, year4 == 1999)
+# what code do you need to use, based on the class of the variable? Need to use == code
+
+
+
+# Exercise 2: 
+# filter NTL.phys.data for Tuesday Lake from 1990 through 1999.
+
+NTL.phys.data.Tues.1990thru1999 <- filter(NTL.phys.data, lakename == "Tuesday Lake", year4 %in% c(1990:1999))
+
+
+```
+Question: Why don't we filter using row numbers?
+
+> Answer:
+
+## Pipes
+
+Pipe is another method to wrangle datasets that looks cleaner and is easier to read.  We designate a pipe with `%>%`. A good way to think about the function of a pipe is with the word "then." 
+
+Let's say we want to take our raw dataset (NTL.phys.data), *then* filter the data for Peter and Paul lakes, *then* select temperature and observation information, and *then* add a column for temperature in Fahrenheit: 
+
+```{r}
+#Building a pipe, start with initial data, then filter by lake name, then select column lakename, then choose between lakedate and then between sampledate:temperature
+NTL.phys.data.processed <- 
+  NTL.phys.data %>%
+  filter(lakename == "Paul Lake" | lakename == "Peter Lake") %>%
+  select(lakename, sampledate:temperature_C) %>%
+  mutate(temperature_F = (temperature_C*9/5) + 32)
+
+#Exercise 3: Using a pipe filter NTL.phys.data for Tuesday Lake from 1990 through 1999 only for July 
+NTL.phys.data.processed2 <-
+  NTL.phys.data %>%
+  filter(lakename=="Tuesday Lake") %>%
+  filter(year4 %in% c(1990:1999)) %>%
+  filter(month(sampledate) == 7)
+
+
+#Exercise 4: Using the data from part 3, a pipe and the summarise() function find the mean surface temperature (hints: you will need to add another filter for depth==0). Make sure you eliminate NAs before computing the means
+
+NTL.phys.data.processed3 <-
+  NTL.phys.data.processed2 %>%
+  filter(depth==0) %>%
+  filter(!is.na(temperature_C)) %>% #doing this to not get errors if there are blanks
+  summarise(mean = mean(temperature_C)) #this will summarise with just the mean
+  
+```
+
+## Gather and Spread
+
+For gather we will use `pivot_longer` and for spread we will use `pivot_wider`.
+
+```{r}
+#Exercise 5: gather irradiance data (measured in the water column and measured on the deck of the sampling boat) into one column using pivot_longer
+
+
+#Exercise 6: spread temperatureC into more than one column based on the depth
+
+```
+
