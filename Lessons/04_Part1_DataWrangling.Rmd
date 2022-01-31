@@ -32,7 +32,7 @@ NTL.phys.data <- read.csv("./Data/Raw/NTL-LTER_Lake_ChemistryPhysics_Raw.csv", s
 colnames(NTL.phys.data)
 head(NTL.phys.data)
 summary(NTL.phys.data)
-str(NTL.phys.data)
+str(NTL.phys.data) #data type of each column
 dim(NTL.phys.data)
 
 class(NTL.phys.data$sampledate)
@@ -63,21 +63,21 @@ vignette("dplyr")
 Filtering allows us to choose certain rows (observations) in our dataset.
 
 Here are the relevant commands used in the `filter` function. Add some notes to designate what these commands mean. 
-`==`
-`!=`
-`<`
-`<=`
-`>`
-`>=`
-`&`
-`|`
+`==`#for a specific value
+`!=`#check if variables are different
+`<`#less than
+`<=`#less than or equal to
+`>`#greater than
+`>=`#greater than or equal to
+`&`#and
+`|`#or
 
 ```{r}
-class(NTL.phys.data$lakeid)
+class(NTL.phys.data$lakeid) #can only compare classes that are the same
 class(NTL.phys.data$depth)
 
 # matrix filtering
-NTL.phys.data.surface1 <- NTL.phys.data[NTL.phys.data$depth == 0,]
+NTL.phys.data.surface1 <- NTL.phys.data[NTL.phys.data$depth == 0,]#filtering for rows that have depth = 0
 
 # dplyr filtering
 NTL.phys.data.surface2 <- filter(NTL.phys.data, depth == 0)
@@ -97,7 +97,7 @@ NTL.phys.data.PeterPaul1 <- filter(NTL.phys.data, lakename == "Paul Lake" | lake
 NTL.phys.data.PeterPaul2 <- filter(NTL.phys.data, lakename != "Central Long Lake" & 
                                      lakename != "Crampton Lake" & lakename != "East Long Lake" &
                                      lakename != "Hummingbird Lake" & lakename != "Tuesday Lake" &
-                                     lakename != "Ward Lake" & lakename != "West Long Lake")
+                                     lakename != "Ward Lake" & lakename != "West Long Lake")#selecting all of those that don't equal Peter Lake or Paul Lake, excluding all of the other lakes that are not what you want
 NTL.phys.data.PeterPaul3 <- filter(NTL.phys.data, lakename %in% c("Paul Lake", "Peter Lake"))
 
 # Choose a range of conditions of a numeric or integer variable
@@ -127,7 +127,7 @@ Arranging allows us to change the order of rows in our dataset. By default, the 
 
 ```{r}
 NTL.phys.data.depth.ascending <- arrange(NTL.phys.data, depth)
-NTL.phys.data.depth.descending <- arrange(NTL.phys.data, desc(depth))
+NTL.phys.data.depth.descending <- arrange(NTL.phys.data, desc(depth))#need to specify if want descending instead of ascending
 
 # Exercise: 
 # Arrange NTL.phys.data by temperature, in descending order. 
@@ -140,7 +140,7 @@ NTL.phys.data.depth.descending <- arrange(NTL.phys.data, desc(depth))
 Selecting allows us to choose certain columns (variables) in our dataset.
 
 ```{r}
-NTL.phys.data.temps <- select(NTL.phys.data, lakename, sampledate:temperature_C)
+NTL.phys.data.temps <- select(NTL.phys.data, lakename, sampledate:temperature_C)#selecting lakename, sampledate, depth, and temperature_C
 
 ```
 ### Mutate
@@ -149,7 +149,7 @@ Mutating allows us to add new columns that are functions of existing columns. Op
 
 ```{r}
 
-NTL.phys.data.temps <- mutate(NTL.phys.data.temps, temperature_F = (temperature_C*9/5) + 32)
+NTL.phys.data.temps <- mutate(NTL.phys.data.temps, temperature_F = (temperature_C*9/5) + 32)#changing the temperature to Celsius
 
 ```
 
@@ -159,14 +159,15 @@ A package that makes coercing date much easier is `lubridate`. A guide to the pa
 
 ```{r}
 # add a month column to the dataset
-NTL.phys.data.PeterPaul1 <- mutate(NTL.phys.data.PeterPaul1, month = month(sampledate)) 
+NTL.phys.data.PeterPaul1 <- mutate(NTL.phys.data.PeterPaul1, month = month(sampledate)) #adding a new column 'month'
 
 # reorder columns to put month with the rest of the date variables
-NTL.phys.data.PeterPaul1 <- select(NTL.phys.data.PeterPaul1, lakeid:daynum, month, sampledate:comments)
+NTL.phys.data.PeterPaul1 <- select(NTL.phys.data.PeterPaul1, lakeid:daynum, month, sampledate:comments)#use select function to change order of columns, moving month after daynum
 
 # find out the start and end dates of the dataset
 interval(NTL.phys.data.PeterPaul1$sampledate[1], NTL.phys.data.PeterPaul1$sampledate[21613])
 interval(first(NTL.phys.data.PeterPaul1$sampledate), last(NTL.phys.data.PeterPaul1$sampledate))
+#function first and last, gives you first and last of the column
 ```
 
 
