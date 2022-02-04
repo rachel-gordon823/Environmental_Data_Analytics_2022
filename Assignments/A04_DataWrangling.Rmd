@@ -29,11 +29,14 @@ getwd()
 library(tidyverse)
 library(lubridate)
 
-Air_O3_2019 <- read.csv("./Data/Raw/EPAair_O3_NC2019_raw.csv")
-Air_O3_2018 <- read.csv("./Data/Raw/EPAair_O3_NC2018_raw.csv")
-Air_PM25_2018 <_ read.csv("./Data/Raw_EPAair_M")
+O3_2019 <- read.csv("./Data/Raw/EPAair_O3_NC2019_raw.csv") #importing O3 2019 data
+O3_2018 <- read.csv("./Data/Raw/EPAair_O3_NC2018_raw.csv") #importing O3 2018 data
+PM25_2018 <- read.csv("./Data/Raw/EPAair_PM25_NC2018_raw.csv") #importing PM25 2018
+PM25_2019 <- read.csv("./Data/Raw/EPAair_PM25_NC2019_raw.csv") #importing PM25 2019
 
 #2
+dim(O3_2019)
+colnames(O3_2019)
 
 ```
 
