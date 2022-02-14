@@ -76,16 +76,19 @@ summary(EPAair$Ozone)
 EPAair.subsample <- sample_n(EPAair, 5000)
 
 # Evaluate assumption of normal distribution
-shapiro.test((EPAair.subsample$Ozone))
+shapiro.test((EPAair.subsample$Ozone)) #tells us it's not normal
 ggplot(EPAair, aes(x = Ozone)) +
   geom_histogram() 
 qqnorm(EPAair$Ozone); qqline(EPAair$Ozone)
+#qq plot shows some extreme, which is why Shapiro said it's not normal
 
 O3.onesample <- t.test(EPAair$Ozone, mu = 50, alternative = "less")
 O3.onesample
+#testing for less than or equal to 50
+#p-value is less than .05, reject the null hypothesis, which is mu >= 50
 
 Ozone.plot <- ggplot(EPAair, aes(x = Ozone)) +
-  #geom_density(stat = "count", fill = "gray") +
+  geom_density(stat = "count", fill = "gray") +
   geom_density(fill = "gray") +
   geom_vline(xintercept = 50, color = "#238b45", lty = 2, size = 0.9) +
   scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0))
@@ -100,8 +103,10 @@ Write a sentence or two about the results of this test. Include both the results
 
 The two-sample *t* test is used to test the hypothesis that the mean of two samples is equivalent. Unlike the one-sample tests, a two-sample test requires a second assumption that the variance of the two groups is equivalent. Are Ozone levels different between 2018 and 2019?
 
+- Going to check for normality
+
 ```{r}
-shapiro.test(EPAair$Ozone[EPAair$Year == 2018])
+shapiro.test(EPAair$Ozone[EPAair$Year == 2018]) #checking for normality
 shapiro.test(EPAair$Ozone[EPAair$Year == 2019])
 
 #p-value less than 0.05 then reject null for 2018 and 2019 i.e. data do not follow normal distribution
@@ -115,7 +120,7 @@ ggplot(EPAair, aes(x = Ozone, color = as.factor(Year))) +
   geom_freqpoly()
 
 # Format as a t-test
-O3.twosample <- t.test(EPAair$Ozone ~ EPAair$Year)
+O3.twosample <- t.test(EPAair$Ozone ~ EPAair$Year) #regressing over categorical variable (year) which has two levels, 2018 and 2019
 O3.twosample
 O3.twosample$p.value
 
@@ -151,6 +156,23 @@ Create three plots, each with appropriately formatted axes and legends. Choose a
 
 ```{r}
 #Exercise 2:
+ozone.year <- ggplot(EPAair, aes(x=Ozone, fill = as.factor(Year)))+ #changing year to a factor, use fill instead of color for transparent
+  geom_density(alpha = 0.5)+ #changing density
+  scale_fill_manual(values = c("darkgreen", "darkblue"))+
+ labs(x= "Ozone AQI value", y = "Density", fill = "") #making sure legend has no name
+print(ozone.year)
+
+ozone.year.box <- ggplot(EPAair, aes(x=as.factor(Year), y=Ozone))+
+  geom_boxplot()+
+  stat_summary(geom = "text", fun.y = max, vjust = -1, size=4, label =c("b", "a"))+ #everything in stat.summary is for the labels
+labs(x="", y = "Ozone AQI Value")
+print(ozone.year.box) 
+
+ozone.violin <- ggplot(EPAair, aes(x=as.factor(Year), y = Ozone))+
+  geom_violin(draw_quantiles = 0.5)+
+  stat_summary(geom = "text", fun.y = max, vjust = -1, size=4, label =c("b", "a"))+ #everything in stat.summary is for the labels
+labs(x="", y = "Ozone AQI Value")
+print(ozone.violin)
 
 
 ```
@@ -164,11 +186,16 @@ For the NTL-LTER dataset, can we predict PM2.5 from Ozone?
 ```{r}
 
 #Exercise 3: Run a linear regression PM2.5 by Ozone. Find the p-value and R-squared value. 
+O3.PM2.5 <- lm(data = EPAair, PM2.5 ~ Ozone)
+summary(O3.PM2.5)
 
-
+#rsquare 0.1316
 
 #Exercise 4: Build a scatterplot. Add a line and standard error for the linear regression. 
-
+PM2.5byO3 <- ggplot(EPAair, aes(x=Ozone, y = PM2.5))+
+  geom_point()+
+  geom_smooth(method="lm")
+  print(PM2.5byO3)
 
 
 ```
