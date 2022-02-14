@@ -16,7 +16,7 @@ editor_options:
 ```{r, message = FALSE}
 getwd()
 library(tidyverse)
-#install.packages("agricolae")
+install.packages("agricolae")
 library(agricolae)   #you may need to install/update package "htmltools" before installing and loading agricolae
 
 Litter <- read.csv("./Data/Processed/NEON_NIWO_Litter_mass_trap_Processed.csv", stringsAsFactors = TRUE)
@@ -34,9 +34,9 @@ theme_set(mytheme)
 ### One-way ANOVA
 A one-way ANOVA is used when you have one categorical explanatory variable with more than two categories. In R, we can run the model with the function `lm` or `aov`, the latter of which will allow us to run post-hoc tests to determine pairwise differences.
 
-Does total litter biomass differ among sites at the Niwot Ridge LTER?
+Does total litter biomass differ among sites at the Niwot Ridge LTER? #research question
 ```{r}
-# Wrangle the data
+# Wrangle the data,  create subset of data
 Litter.Totals <- Litter %>%
   group_by(plotID, collectDate, nlcdClass) %>%
   summarise(dryMass = sum(dryMass))
@@ -136,7 +136,7 @@ The output gives test statistics for each explanatory variable as well as the in
 
 ```{r}
 # Format as aov
-Litter.anova.2way3 <- aov(data = Litter, dryMass ~ functionalGroup * nlcdClass)
+Litter.anova.2way3 <- aov(data = Litter, dryMass ~ functionalGroup * nlcdClass)#now using * to see interaction among them
 summary(Litter.anova.2way3)
 
 # Format as lm
@@ -151,8 +151,8 @@ If the interaction is significant, we interpret pairwise differences for the int
 TukeyHSD(Litter.anova.2way3)
 
 Litter.interaction <- with(Litter, interaction(functionalGroup, nlcdClass))
-
-#Litter.test <- cbind(Litter,Litter.interaction)
+Litter.test <- cbind(Litter, Litter.interaction)
+#Litter.test <- cbind(Litter,Litter.interaction) 
 
 Litter.anova.2way5 <- aov(data = Litter, dryMass ~ Litter.interaction)
 
