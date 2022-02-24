@@ -189,7 +189,8 @@ For the NTL-LTER dataset, can we predict PM2.5 from Ozone?
 O3.PM2.5 <- lm(data = EPAair, PM2.5 ~ Ozone)
 summary(O3.PM2.5)
 
-#rsquare 0.1316
+#rsquare 0.1316, want to add more variables to push the r-square up
+#p-value 2.2e-16
 
 #Exercise 4: Build a scatterplot. Add a line and standard error for the linear regression. 
 PM2.5byO3 <- ggplot(EPAair, aes(x=Ozone, y = PM2.5))+
@@ -197,6 +198,7 @@ PM2.5byO3 <- ggplot(EPAair, aes(x=Ozone, y = PM2.5))+
   geom_smooth(method="lm")
   print(PM2.5byO3)
 
+  #when you look at scatter plot, you see that the points are not close together with respect to blue line.Which means we are probably missing some variables
 
 ```
 
@@ -209,16 +211,28 @@ What other variables can we add to improve model?
 
 #Exercise 5: Build correlation plots and identify more possible explanatory variables to add to the regression.
 
+library(dplyr)
+EPAair.subset <-
+  EPAair %>%
+  select(meanLat:PM2.5) %>%
+  na.omit()
 
+EPAair.corr <- cor(EPAair.subset)
+corrplot(EPAair.corr, method = "ellipse")
+corrplot.mixed(EPAair.corr, upper="ellipse")
 
 
 #Exercise 6: Choose a model by AIC in a Stepwise Algorithm. Do the results from AIC match the variables you selected on Exercise 5?
 
+OzoneALL.regression <-lm(data=EPAair, formula = PM2.5 ~ Ozone + Year + Month + meanLat + meanLng)
+step(OzoneALL.regression)
 
 
 
 #Exercise 7: Run another regression using the variables selected on Exercise 6. Compare r-squared value with the one from Exercise 5. 
 
+OzoneBest.regression <- lm(data=EPAair, PM2.5~Ozone + Month + meanLng + meanLat)
+summary(OzoneBest.regression)
 ```
 
 

@@ -58,6 +58,8 @@ $$ y = \alpha + \beta*x + \epsilon $$
 
 The goal for the linear regression is to find a **line of best fit**, which is the line drawn through the bivariate space that minimizes the total distance of points from the line. This is also called a "least squares" regression. The remainder of the variance not explained by the model is called the **residual error.** 
 
+#on average, residuals are always going to be 0
+#for linear regression, always check the residuals
 The linear regression will test the null hypotheses that
 
 1. The intercept (alpha) is equal to zero.
@@ -68,7 +70,9 @@ Whether or not we care about the result of each of these tested hypotheses will 
 Important components of the linear regression are the correlation and the R-squared value. The **correlation** is a number between -1 and 1, describing the relationship between the variables. Correlations close to -1 represent strong negative correlations, correlations close to zero represent weak correlations, and correlations close to 1 represent strong positive correlations. The **R-squared value** is the correlation squared, becoming a number between 0 and 1. The R-squared value describes the percent of variance accounted for by the explanatory variables. 
 
 ## Simple Linear Regression
+#p value is telling you the significance of the regression
 
+#if r-squared is close to 0, look at more variables
 For the NTL-LTER dataset, can we predict irradiance (light level) from depth?
 
 ```{r}
@@ -197,9 +201,12 @@ Paul.naomit <- PeterPaul.chem.nutrients %>%
 TPAIC <- lm(data = Paul.naomit, tp_ug ~ depth + dissolvedOxygen + 
               temperature_C + tn_ug + po4) #considering all 5 columns of dataset as explanatory variables
 
+#every time you remove a variable and your AIC goes up, that means that variable should remain
 #Choose a model by AIC in a Stepwise Algorithm
 step(TPAIC)
 TPmodel <- lm(data = Paul.naomit, tp_ug ~ dissolvedOxygen + temperature_C + tn_ug)
 summary(TPmodel)
+
+#after the none, keep all of those variables
 
 ```
