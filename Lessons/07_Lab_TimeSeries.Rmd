@@ -57,7 +57,7 @@ Rainfall_BR_processed <-
   Rainfall_BR %>% 
   rename( Rainfall = Rainfall....MM.) %>% 
   separate(Statistics,c("Null","Month","Null2")," ") %>% 
-  mutate( Date = my(paste0(Month,"-",Year))) %>% 
+  mutate( Date = my(paste0(Month,"-",Year))) %>% #pasting all the elements together
   select(Date,Rainfall)
 
 #Exercise 3: Repeat exercise 2 to the temperature dataset.
@@ -81,15 +81,21 @@ BRA_complete <- inner_join(Rainfall_BR_processed,Temp_BR_processed)
 ```{r}
 
 #Exercise 5: Check if there is any missing data for both temperature and rainfall series.
-
+summary(BRA_complete)
 
 
 
 #Exercise 6: Plot both series over time on separate plots. Add a trend line using geom_smooth(). Can you say something about the trend just by visualizing the data?
 
+ggplot(BRA_complete, aes (x = Date, y = Rainfall))+
+  geom_line()+
+  geom_smooth(method="lm")
 
+ggplot(BRA_complete, aes (x = Date, y = Temperature_C))+
+  geom_line()+
+  geom_smooth(method="lm")
 
-
+#geom line is preferred way to look at time series plots over time
 
 
 ```
@@ -99,8 +105,11 @@ BRA_complete <- inner_join(Rainfall_BR_processed,Temp_BR_processed)
 ```{r}
 #Exercise 7: Create a time series objects for each series using ts(). Make sure you specify the starting point and frequency.
 
+fmonth <- month(first(BRA_complete$Date)) #extracting first month of date column
+fyear <- year(first(BRA_complete$Date)) # extracting first year of data column
 
-
+  BR_Rain_ts <- ts(BRA_complete$Rainfall, start = c(fmonth,fyear), frequency=12)
+  BR_Temp_ts <- ts(BRA_complete$Temperature, start = c(fmonth,fyear), frequency=12)
 ```
 
 
