@@ -80,11 +80,14 @@ mapView(counties_sf, zcol = "AWATER")
 
 ```{r read HUCs shapefile}
 #Read the shapefile into an sf dataframe named "huc8_sf"
-
+huc8_sf <- st_read('./Data/Spatial/NCHUC8.shp')
 
 
 #View the data as a map, colored by the acreage in each
+ggplot() +
+  geom_sf(data=huc8_sf, aes(fill=ACRES))
 
+mapview(huc8_sf, zcol = "ACRES")
 
 ```
 
@@ -94,7 +97,8 @@ mapView(counties_sf, zcol = "AWATER")
 
 ```{r Select the Upper Neuse HUC 8}
 #Read the shapefile into an sf dataframe
-
+neus <- st_read('./Data/Spatial/NCHUC8.shp') %>%
+  filter(SUBBASIN == 'Upper Neuse')
 
 
 #Create a map
@@ -115,6 +119,9 @@ The URL '<https://raw.githubusercontent.com/ENV859/EnviroAtlasData/main/Wind_Ene
 ```{r}
 #Compute HUC8 wind energy
 
+wind_data <- read.csv('https://raw.githubusercontent.com/ENV859/EnviroAtlasData/main/Wind_Energy.csv', colClasses = c('HUC_12'='factor')) %>%
+  mutate(HUC_8 = substr(HUC_12,8)) %>%
+  group_by()
 
 
 
@@ -168,12 +175,16 @@ Select the counties in the "Triangle" (Chatham, Durham, Orange, and Wake). Then 
 
 ```{r EXERCISE: Clipping}
 #Select the Triangle counties from the sf_counties dataframe
+triangle_sf <- counties_sf_utm %>%
+  filter(NAME %in% c('Chatham', 'Durham', 'Orange', 'Wake'))
 
+mapview(triangle_sf)
 
 
   
 #Grab the intersecting HUC_8s
-
+selected_HUC5 <- huc8_sf_utm[triangle_sf,]
+mapview(selected_HUCS)
 
 
 #Intersect the HUC_8s
