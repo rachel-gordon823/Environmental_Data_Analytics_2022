@@ -146,6 +146,7 @@ ggplot(data=huc8_sf) +
 huc8_sf.subset <- st_read('./Data/Spatial/NCHUC8.shp') %>% 
   filter(SUBBASIN == 'Upper Neuse')
 
+
 #Create a map
 ggplot() + 
   geom_sf(data=huc8_sf,fill='orange') + 

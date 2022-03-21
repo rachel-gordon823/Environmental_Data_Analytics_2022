@@ -112,6 +112,7 @@ sum(is.na(GaringerOzoneWrangled))
 
 # 5
 Days <- 
+  
 as.data.frame(seq.Date(as.Date("2010/01/01"), 
                        as.Date("2019/12/31"), "day")) #creating day dataframe
 
